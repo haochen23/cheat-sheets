@@ -14,7 +14,33 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
-2. Add **Traefik IngressRoute ([[traefik]])**. 
+2. Install Argo CD CLI:
+```bash
+curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/v2.1.5/argocd-linux-amd64 chmod +x /usr/local/bin/argocd
+```
+
+Login from CLI:
+```bash
+argocd login localhost:30443 --insecure
+```
+
+Interacting with apps in CLI:
+```bash
+argocd app list 
+argocd app get demo 
+argocd app history demo
+
+# delete app
+argocd app delete demo
+
+
+# create app from cli
+argocd app create demo2 \ --project default \ --repo https://github.com/codefresh-contrib/gitops-certification-examples \ --path "./simple-app" \ --dest-namespace default \ --dest-server https://kubernetes.default.svc
+
+# sync app
+argocd app sync demo2
+```
+3. Add **Traefik IngressRoute ([[traefik]])**. 
 
 ```yaml
 apiVersion: traefik.containo.us/v1alpha1
